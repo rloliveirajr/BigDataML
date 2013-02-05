@@ -63,6 +63,8 @@ public class LACRules implements Serializable
 	 */
 	double[] calculateProbabilities(LACInstance testInstance) throws Exception
 	{
+		this.cacheHits = 0;
+		this.cacheMisses = 0;
 		double[] probs;
 		double[] scores = calculateScores(testInstance);
 		
