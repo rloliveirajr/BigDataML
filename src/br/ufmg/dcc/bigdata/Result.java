@@ -7,13 +7,16 @@ public class Result {
 	String[] labels;
 	double[] probs;
 	
-	public Result(int misses, int hits, String[] labels, double[] probs){
+	public Result(int misses, int hits, String[] labels, double[] probs) {
 		this.misses = misses;
 		this.hits = hits;
 		this.labels = labels;
 		this.probs = probs;
 	}
 
+	public Result() {
+		
+	}
 	/**
 	 * @return the misses
 	 */

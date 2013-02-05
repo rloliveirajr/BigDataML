@@ -60,6 +60,8 @@ public class LAC implements Serializable {
 			populateInstance(instance, trainingInstance, true);			
 		}
 		
+		data.close();
+		
 		this.rules = this.trainingInstances.prepare(maxRuleSize - 1, minSupport, minConfidence, 
 				considerFeaturePositions, false);
 	}
