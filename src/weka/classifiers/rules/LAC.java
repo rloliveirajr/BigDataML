@@ -11,6 +11,7 @@
 package weka.classifiers.rules;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +36,19 @@ public class LAC implements Serializable {
 	private Set<String> classes;
 
 	public LAC(){}
+	
+	public LAC(String filepath) {
+		try
+		{
+			FileReader fr = new FileReader(filepath);
+			BufferedReader buffer = new BufferedReader(fr);
+			this.buildClassifierFromLacStyle(buffer);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+    	
+	}
 	
 	public LAC(double minConfidence, double minSupport, int maxRuleSize){
 		this.minConfidence = minConfidence;
@@ -66,19 +80,30 @@ public class LAC implements Serializable {
 				considerFeaturePositions, false);
 	}
 
-	public Result distributionForInstance(String[] instance) throws Exception {
+	public Result distributionForInstance(String[] instance) {
 		LACInstance testInstance = new LACInstance(trainingInstances);
 		populateInstance(instance, testInstance, false);
+		double[] probs;
+		String[] labels;
+		int cacheHits;
+		int cacheMisses;
+		try
+		{
+			labels = new String[classes.size()];
+			probs = rules.calculateProbabilities(testInstance);
+			
+			cacheHits = rules.getCacheHits();
+			cacheMisses = rules.getCacheMisses();
 		
-		double[] probs = rules.calculateProbabilities(testInstance);
-		
-		int cacheHits = rules.getCacheHits();
-		int cacheMisses = rules.getCacheMisses();
-		String[] labels = new String[classes.size()];
-		
-		for (int i = 0; i < probs.length; i++) 	{
-			String value = trainingInstances.getClassByIndex(i).getLabel();
-			labels[i] = value;
+			for (int i = 0; i < probs.length; i++) 	{
+				String value = trainingInstances.getClassByIndex(i).getLabel();
+				labels[i] = value;
+			}
+		} catch (Exception e) {
+			cacheHits = -1000;
+			cacheMisses = -1000;
+			labels = new String[2];
+			probs = new double[2];
 		}
 		
 		Result result = new Result(cacheMisses, cacheHits, labels, probs);

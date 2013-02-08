@@ -1,7 +1,13 @@
 package br.ufmg.dcc.bigdata;
 
-public class Result {
+import java.io.Serializable;
 
+public class Result implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1199932059686851194L;
 	int misses;
 	int hits;
 	String[] labels;
@@ -15,7 +21,8 @@ public class Result {
 	}
 
 	public Result() {
-		
+		this.misses = 0;
+		this.hits = 0;
 	}
 	/**
 	 * @return the misses
