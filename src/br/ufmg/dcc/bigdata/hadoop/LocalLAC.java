@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.hadoop.io.IntWritable;
@@ -20,14 +21,27 @@ public class LocalLAC {
 		 //Train lac
 		int misses = 0;
 		int hits = 0;
-		LAC classifier = new LAC("/home/alessandro/ufmg/baselac/dilma/dilma_00.lac");
-	    try {
-	    	FileInputStream fstream = new FileInputStream("/home/alessandro/ufmg/baselac/dilma/dilma_012.lac");
+		try {
+			LAC classifier = new LAC(args[0]);
+			
+	    	/*FileReader fr = new FileReader("/home/alessandro/ufmg/baselac/dilma/dilma_00.lac");
+	    	BufferedReader buffer = new BufferedReader(fr);
+	    	classifier.buildClassifierFromLacStyle(buffer);
+	    	
+	    	FileOutputStream fileOutput = new FileOutputStream("/tmp/LacIndex.obj");
+	    	ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+	    	objectOutput.writeObject(classifier);
+	    	objectOutput.close();
+	     	ObjectInputStream obj = new ObjectInputStream(new FileInputStream("/tmp/LacIndex.obj"));
+  			classifier = (LAC) obj.readObject();
+  			obj.close();
+			*/
+			
+	    	FileInputStream fstream = new FileInputStream(args[1]);
 	    	DataInputStream in = new DataInputStream(fstream);
 	    	BufferedReader br = new BufferedReader(new InputStreamReader(in));
 	    	String line;
 	    	while ((line = br.readLine()) != null) {
-	    		System.out.println(line);
 	    		
 		    	Result result = classifier.distributionForInstance(line.split(" "));
 		    	misses += result.getMisses();

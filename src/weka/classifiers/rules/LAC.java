@@ -80,15 +80,15 @@ public class LAC implements Serializable {
 				considerFeaturePositions, false);
 	}
 
-	public Result distributionForInstance(String[] instance) {
+	public Result distributionForInstance(String[] instance) throws Exception {
 		LACInstance testInstance = new LACInstance(trainingInstances);
 		populateInstance(instance, testInstance, false);
 		double[] probs;
 		String[] labels;
 		int cacheHits;
 		int cacheMisses;
-		try
-		{
+		///try
+		//{
 			labels = new String[classes.size()];
 			probs = rules.calculateProbabilities(testInstance);
 			
@@ -99,13 +99,13 @@ public class LAC implements Serializable {
 				String value = trainingInstances.getClassByIndex(i).getLabel();
 				labels[i] = value;
 			}
-		} catch (Exception e) {
-			cacheHits = -1000;
-			cacheMisses = -1000;
-			labels = new String[2];
-			probs = new double[2];
-		}
-		
+//		} catch (Exception e) {
+//			cacheHits = -1000;
+//			cacheMisses = -1000;
+//			labels = new String[2];
+//			probs = new double[2];
+//		}
+//		
 		Result result = new Result(cacheMisses, cacheHits, labels, probs);
 		
 		return result;
